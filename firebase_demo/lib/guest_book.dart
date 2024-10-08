@@ -16,7 +16,6 @@ class GuestBook extends StatefulWidget {
 
   final FutureOr<void> Function(String message) addMessage;
   final List<GuestBookMessage> messages; // new
-
   @override
   _GuestBookState createState() => _GuestBookState();
 }
@@ -24,7 +23,8 @@ class GuestBook extends StatefulWidget {
 class _GuestBookState extends State<GuestBook> {
   final _formKey = GlobalKey<FormState>(debugLabel: '_GuestBookState');
   final _controller = TextEditingController();
-
+  final _colorController = TextEditingController();
+  final List<String> colors = ["red", "green", "blue"];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -51,6 +51,17 @@ class _GuestBookState extends State<GuestBook> {
                   ),
                 ),
                 const SizedBox(width: 8),
+                DropdownMenu<String>(
+                  label: const Text("Colors"),
+                  initialSelection: "red",
+                  controller: _colorController,
+                  dropdownMenuEntries: colors.map((String colorname) {
+                        return DropdownMenuEntry(
+                          value: colorname,
+                          label: colorname,
+                        );
+                      }).toList()
+                  ),
                 StyledButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
@@ -72,7 +83,7 @@ class _GuestBookState extends State<GuestBook> {
         ),
         const SizedBox(height: 8),
         for (var message in widget.messages)
-          Paragraph('${message.name}: ${message.message}'),
+          Paragraph(content: ('${message.name}: ${message.message}'), color : message.color),
         const SizedBox(height: 8),
       ]
     );

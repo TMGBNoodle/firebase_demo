@@ -24,6 +24,12 @@ class ApplicationState extends ChangeNotifier {
   List<GuestBookMessage> _guestBookMessages = [];
   List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
 
+  Map<String, Color> colors = {
+    'blue' : Colors.blue,
+    'red' : Colors.red,
+    'green' : Colors.green
+  };
+
   int _attendees = 0;
   int get attendees => _attendees;
 
@@ -40,6 +46,13 @@ class ApplicationState extends ChangeNotifier {
       userDoc.set(<String, dynamic>{'attending': false});
     }
   }
+  Color getColor(String name) {
+    print("Getting Colors $name");
+    if(colors[name] == null) {
+      return Colors.amber;
+    } 
+    else return colors[name]!;
+  }
 
   Future<void> init() async {
     await Firebase.initializeApp(
@@ -48,7 +61,7 @@ class ApplicationState extends ChangeNotifier {
     FirebaseUIAuth.configureProviders([
       EmailAuthProvider(),
     ]);
-        FirebaseFirestore.instance
+      FirebaseFirestore.instance
         .collection('attendees')
         .where('attending', isEqualTo: true)
         .snapshots()
@@ -70,6 +83,7 @@ class ApplicationState extends ChangeNotifier {
               GuestBookMessage(
                 name: document.data()['name'] as String,
                 message: document.data()['text'] as String,
+                color: getColor(document.data()['color'] as String),
               ),
             );
           }
@@ -112,6 +126,7 @@ class ApplicationState extends ChangeNotifier {
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'userId': FirebaseAuth.instance.currentUser!.uid,
+      'color' : 'red'
     });
   }
 }
