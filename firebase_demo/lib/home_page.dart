@@ -62,8 +62,8 @@ class HomePage extends StatelessWidget {
                   ),
                   const Header('Discussion'),
                   GuestBook(
-                    addMessage: (message) =>
-                    appState.addMessageToGuestBook(message),
+                    addMessage: (message, color) =>
+                    appState.addMessageToGuestBook(message, color),
                     messages: appState.guestBookMessages,
                   ),
                 ],

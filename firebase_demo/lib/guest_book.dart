@@ -14,7 +14,7 @@ class GuestBook extends StatefulWidget {
     required this.messages,
   });
 
-  final FutureOr<void> Function(String message) addMessage;
+  final FutureOr<void> Function(String message, String color) addMessage;
   final List<GuestBookMessage> messages; // new
   @override
   _GuestBookState createState() => _GuestBookState();
@@ -65,7 +65,7 @@ class _GuestBookState extends State<GuestBook> {
                 StyledButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      await widget.addMessage(_controller.text);
+                      await widget.addMessage(_controller.text, _colorController.text);
                       _controller.clear();
                     }
                   },
