@@ -63,7 +63,7 @@ final _router = GoRouter(
             );
           },
           routes: [
-            GoRoute(
+            GoRoute( 
               path: 'forgot-password',
               builder: (context, state) {
                 final arguments = state.uri.queryParameters;
